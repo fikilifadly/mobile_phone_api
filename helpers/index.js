@@ -7,16 +7,10 @@ const hashPass = (password) => {
 	return hash;
 };
 
-const comparePass = (plainPass, hashedPass) => {
-	return bcrypt.compareSync(plainPass, hashedPass);
-};
+const comparePassword = (plain, hashed) => bcrypt.compareSync(plain, hashed);
 
-const signToken = (payload) => {
-	return jwt.sign(payload, process.env.SECRET);
-};
+const signToken = (payload) => jwt.sign(payload, process.env.SECRET);
 
-const verifyToken = (token) => {
-	return jwt.verify(token, process.env.SECRET);
-};
+const verifyToken = (token) => jwt.verify(token, process.env.SECRET);
 
-module.exports = { hashPass, comparePass, signToken, verifyToken };
+module.exports = { hashPass, comparePassword, signToken, verifyToken };
