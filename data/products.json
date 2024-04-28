@@ -5,7 +5,7 @@
       "price": 1188,
       "stock": 20,
       "image": "placeholder_image.jpg", 
-      "UserId": 1
+      "UserId": 3
     },
     {
       "name": "Apple iPhone 14 Pro Max",
@@ -13,7 +13,7 @@
       "price": 1099,
       "stock": 35,
       "image": "placeholder_image.jpg", 
-      "UserId": 1
+      "UserId": 3
     },
     {
       "name": "Google Pixel 6a",
@@ -21,7 +21,7 @@
       "price": 449,
       "stock": 100,
       "image": "placeholder_image.jpg", 
-      "UserId": 1
+      "UserId": 3
     },
     {
       "name": "OnePlus 11 Pro",
@@ -29,7 +29,7 @@
       "price": 899,
       "stock": 75,
       "image": "placeholder_image.jpg", 
-      "UserId": 1
+      "UserId": 2
     },
     {
       "name": "Xiaomi 13",
@@ -37,7 +37,7 @@
       "price": 799,
       "stock": 40,
       "image": "placeholder_image.jpg", 
-      "UserId": 1
+      "UserId": 2
     },
     {
       "name": "Motorola Edge 30 Neo",
@@ -45,6 +45,6 @@
       "price": 399,
       "stock": 120,
       "image": "placeholder_image.jpg", 
-      "UserId": 1
+      "UserId": 2
     }
   ]

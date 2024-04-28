@@ -57,7 +57,7 @@ module.exports = (sequelize, DataTypes) => {
 			role: {
 				type: DataTypes.STRING,
 				allowNull: false,
-				defaultValue: "user",
+				defaultValue: "admin",
 			},
 		},
 		{
@@ -65,6 +65,11 @@ module.exports = (sequelize, DataTypes) => {
 			modelName: "User",
 		}
 	);
+
+	User.beforeCreate(async (user) => {
+		user.role = "admin";
+		user.password = await hashPass(user.password);
+	});
 
 	return User;
 };

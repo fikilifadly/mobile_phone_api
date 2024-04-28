@@ -1,14 +1,20 @@
 [
     {
-        "username": "admin",
+        "username": "superadmin",
+        "email": "superadmin@admin.com",
+        "password": "superadmin",
+        "role": "superadmin"
+    },
+    {
+        "username": "admin1",
         "email": "admin@admin.com",
-        "password": "@dmiN123",
+        "password": "admin1",
         "role": "admin"
     },
     {
-        "username": "user",
-        "email": "user@user.com",
-        "password": "Us$r123",
-        "role": "user"
+        "username": "admin2",
+        "email": "admin2@admin.com",
+        "password": "admin2",
+        "role": "admin"
     }
 ]

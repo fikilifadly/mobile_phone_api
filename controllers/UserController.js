@@ -20,7 +20,7 @@ module.exports = class UserController {
 			const data = {
 				username,
 				email,
-				password: await hashPass(password),
+				password,
 			};
 
 			await User.create(data);
@@ -49,8 +49,9 @@ module.exports = class UserController {
 
 			const matchPass = comparePassword(password, user.password);
 			if (!matchPass) throw { name: "Invalid email/password", status: 401 };
+			console.log(user, "======");
 
-			const access_token = signToken({ id: user.id, name: user.username });
+			const access_token = signToken({ id: user.id, name: user.username, role: user.role });
 
 			res.status(200).json({ access_token });
 		} catch (error) {

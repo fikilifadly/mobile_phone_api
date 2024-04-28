@@ -23,6 +23,7 @@ const errorHandler = (err, req, res, next) => {
 		case "Product not found":
 		case "Theres nothing to update":
 		case "Forbidden access":
+		case "Your dont have permission":
 			res.status(statusCode).json({ message: err.name });
 		default:
 			res.status(statusCode).json({ message: "Internal Server Error" });

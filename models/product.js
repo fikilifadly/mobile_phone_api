@@ -1,5 +1,5 @@
 "use strict";
-const { Model } = require("sequelize");
+const { Model, Op } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
 	class Product extends Model {
 		/**
@@ -9,6 +9,30 @@ module.exports = (sequelize, DataTypes) => {
 		 */
 		static associate(models) {
 			Product.belongsTo(models.User, { foreignKey: "UserId" });
+		}
+
+		static getProducts(name, role, id, include) {
+			console.log(name, role, id, "===from model===");
+
+			const option = {
+				include,
+				where: {},
+				order: [["id", "DESC"]],
+			};
+
+			if (name) {
+				option.where.name = {
+					[Op.iLike]: `%${name}%`,
+				};
+			}
+
+			if (role !== "superadmin") {
+				option.where.UserId = {
+					[Op.eq]: id,
+				};
+			}
+
+			return this.findAll(option);
 		}
 	}
 	Product.init(

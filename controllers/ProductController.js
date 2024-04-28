@@ -1,27 +1,22 @@
 const { Op } = require("sequelize");
-const { Product } = require("../models");
+const { Product, User } = require("../models");
 const { isObjectEmpty } = require("../helpers");
 
 module.exports = class ProductController {
 	static async getAllProducts(req, res, next) {
 		try {
 			const { name } = req.query;
-			console.log(name, "====");
+			const { role, id } = req.user;
 
-			if (name) {
-				const products = await Product.findAll({
-					where: {
-						name: {
-							[Op.iLike]: `%${name}%`,
-						},
-					},
-					order: [["id", "DESC"]],
-				});
-				return res.status(200).json(products);
-			}
-			const products = await Product.findAll({
-				order: [["id", "DESC"]],
-			});
+			const include = [
+				{
+					model: User,
+					attributes: ["username"],
+				},
+			];
+
+			const products = await Product.getProducts(name, role, id, include);
+
 			res.status(200).json(products);
 		} catch (error) {
 			next(error);
@@ -31,9 +26,15 @@ module.exports = class ProductController {
 	static async getProductById(req, res, next) {
 		try {
 			const { id } = req.params;
+
 			const product = await Product.findOne({
 				where: {
 					id,
+				},
+
+				include: {
+					model: User,
+					attributes: ["username"],
 				},
 			});
 

@@ -11,7 +11,7 @@ async function authentication(req, res, next) {
 
 		if (bearer !== "Bearer" || !token) throw { name: "Invalid token", status: 401 };
 
-		const { id } = verifyToken(token);
+		const { id, role, username } = verifyToken(token);
 		const user = await User.findOne({
 			where: {
 				id,
@@ -21,6 +21,8 @@ async function authentication(req, res, next) {
 
 		req.user = {
 			id,
+			role,
+			username,
 		};
 
 		next();
