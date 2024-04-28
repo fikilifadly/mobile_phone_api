@@ -20,6 +20,7 @@ const errorHandler = (err, req, res, next) => {
 		case "Password is required":
 		case "Invalid email/password":
 		case "Invalid token":
+		case "Product not found":
 			res.status(statusCode).json({ message: err.name });
 		default:
 			res.status(statusCode).json({ message: "Internal Server Error" });
