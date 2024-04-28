@@ -4,10 +4,10 @@ const { User } = require("../models");
 module.exports = class UserController {
 	static async register(req, res, next) {
 		try {
-			if (!req.body.username) throw { name: "Username is required", status: 400 };
-			if (!req.body.email) throw { name: "Email is required", status: 400 };
-			if (!req.body.password) throw { name: "Password is required", status: 400 };
 			const { username, email, password } = req.body;
+			if (!username) throw { name: "Username is required", status: 400 };
+			if (!email) throw { name: "Email is required", status: 400 };
+			if (!password) throw { name: "Password is required", status: 400 };
 
 			const user = await User.findOne({
 				where: {
@@ -25,7 +25,7 @@ module.exports = class UserController {
 
 			await User.create(data);
 
-			res.status(201).json({ message: `User ${user} has been created` });
+			res.status(201).json({ message: `User ${username} has been created` });
 		} catch (error) {
 			next(error);
 		}

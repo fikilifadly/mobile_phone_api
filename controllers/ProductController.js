@@ -1,6 +1,12 @@
-const { Op } = require("sequelize");
 const { Product, User } = require("../models");
 const { isObjectEmpty } = require("../helpers");
+const cloudinary = require("cloudinary").v2;
+
+cloudinary.config({
+	cloud_name: process.env.CLOUD_NAME,
+	api_key: process.env.CLOUDINARY_KEY,
+	api_secret: process.env.CLOUDINARY_SECRET,
+});
 
 module.exports = class ProductController {
 	static async getAllProducts(req, res, next) {
@@ -51,12 +57,14 @@ module.exports = class ProductController {
 			const { name, description, price, stock, image } = req.body;
 			const { id } = req.user;
 
+			const convertedImage = await cloudinary.uploader.upload(image, { folder: "10xers" });
+
 			const product = await Product.create({
 				name,
 				description,
 				price,
 				stock,
-				image,
+				image: convertedImage.url,
 				UserId: id,
 			});
 			res.status(201).json(product);
@@ -69,7 +77,7 @@ module.exports = class ProductController {
 		try {
 			if (isObjectEmpty(req.body)) throw { name: "Theres nothing to update", status: 400 };
 
-			const { UserId } = req.body;
+			const { UserId, image } = req.body;
 
 			const { id } = req.params;
 
@@ -84,6 +92,14 @@ module.exports = class ProductController {
 			if (UserId) throw { name: "Forbidden access", status: 403 };
 
 			const removeSame = Object.fromEntries(Object.entries(req.body).filter(([key, value]) => key in product && value !== undefined && value !== null && value !== ""));
+
+			if (image) {
+				const { url } = await cloudinary.uploader.upload(image, { folder: "10xers" });
+
+				removeSame.image = url;
+			}
+
+			console.log(removeSame, "=====");
 
 			await product.update(removeSame);
 			await product.save();
