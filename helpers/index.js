@@ -13,4 +13,6 @@ const signToken = (payload) => jwt.sign(payload, process.env.SECRET);
 
 const verifyToken = (token) => jwt.verify(token, process.env.SECRET);
 
-module.exports = { hashPass, comparePassword, signToken, verifyToken };
+const isObjectEmpty = (objectName) => Object.keys(objectName).length === 0;
+
+module.exports = { hashPass, comparePassword, signToken, verifyToken, isObjectEmpty };

@@ -1,10 +1,13 @@
 const { Op } = require("sequelize");
 const { Product } = require("../models");
+const { isObjectEmpty } = require("../helpers");
 
 module.exports = class ProductController {
 	static async getAllProducts(req, res, next) {
 		try {
 			const { name } = req.query;
+			console.log(name, "====");
+
 			if (name) {
 				const products = await Product.findAll({
 					where: {
@@ -12,10 +15,13 @@ module.exports = class ProductController {
 							[Op.iLike]: `%${name}%`,
 						},
 					},
+					order: [["id", "DESC"]],
 				});
 				return res.status(200).json(products);
 			}
-			const products = await Product.findAll();
+			const products = await Product.findAll({
+				order: [["id", "DESC"]],
+			});
 			res.status(200).json(products);
 		} catch (error) {
 			next(error);
@@ -42,6 +48,7 @@ module.exports = class ProductController {
 	static async createProduct(req, res, next) {
 		try {
 			const { name, description, price, stock, image } = req.body;
+			const { id } = req.user;
 
 			const product = await Product.create({
 				name,
@@ -49,6 +56,7 @@ module.exports = class ProductController {
 				price,
 				stock,
 				image,
+				UserId: id,
 			});
 			res.status(201).json(product);
 		} catch (error) {
@@ -58,8 +66,11 @@ module.exports = class ProductController {
 
 	static async updateProduct(req, res, next) {
 		try {
+			if (isObjectEmpty(req.body)) throw { name: "Theres nothing to update", status: 400 };
+
+			const { UserId } = req.body;
+
 			const { id } = req.params;
-			const { name, description, price, stock, image } = req.body;
 
 			const product = await Product.findOne({
 				where: {
@@ -69,9 +80,9 @@ module.exports = class ProductController {
 
 			if (!product) throw { name: "Product not found", status: 404 };
 
-			const removeSame = Object.fromEntries(Object.entries(req.body).filter(([key, value]) => key in product && value !== undefined && value !== null && value !== ""));
+			if (UserId) throw { name: "Forbidden access", status: 403 };
 
-			delete removeSame.UserId;
+			const removeSame = Object.fromEntries(Object.entries(req.body).filter(([key, value]) => key in product && value !== undefined && value !== null && value !== ""));
 
 			await product.update(removeSame);
 			await product.save();

@@ -21,6 +21,8 @@ const errorHandler = (err, req, res, next) => {
 		case "Invalid email/password":
 		case "Invalid token":
 		case "Product not found":
+		case "Theres nothing to update":
+		case "Forbidden access":
 			res.status(statusCode).json({ message: err.name });
 		default:
 			res.status(statusCode).json({ message: "Internal Server Error" });
