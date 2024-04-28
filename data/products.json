@@ -1,0 +1,50 @@
+[
+    {
+      "name": "Samsung Galaxy S23 Ultra",
+      "description": "The Samsung Galaxy S23 Ultra is a top-of-the-line phone with a powerful processor, a stunning camera system, and a long-lasting battery.",
+      "price": 1188,
+      "stock": 20,
+      "image": "placeholder_image.jpg", 
+      "UserId": 1
+    },
+    {
+      "name": "Apple iPhone 14 Pro Max",
+      "description": "The Apple iPhone 14 Pro Max boasts a powerful A16 Bionic chip, a triple-lens camera system with improved low-light performance, and a beautiful Super Retina XDR display.",
+      "price": 1099,
+      "stock": 35,
+      "image": "placeholder_image.jpg", 
+      "UserId": 1
+    },
+    {
+      "name": "Google Pixel 6a",
+      "description": "The Google Pixel 6a offers a great balance of price and performance, with a powerful Google Tensor chip, a capable dual-camera system, and a clean Android experience.",
+      "price": 449,
+      "stock": 100,
+      "image": "placeholder_image.jpg", 
+      "UserId": 1
+    },
+    {
+      "name": "OnePlus 11 Pro",
+      "description": "The OnePlus 11 Pro delivers super-fast charging, a smooth 120Hz display, and a powerful Snapdragon 8 Gen 2 processor at a competitive price.",
+      "price": 899,
+      "stock": 75,
+      "image": "placeholder_image.jpg", 
+      "UserId": 1
+    },
+    {
+      "name": "Xiaomi 13",
+      "description": "The Xiaomi 13 features a premium design, a powerful camera system co-developed with Leica, and long battery life.",
+      "price": 799,
+      "stock": 40,
+      "image": "placeholder_image.jpg", 
+      "UserId": 1
+    },
+    {
+      "name": "Motorola Edge 30 Neo",
+      "description": "The Motorola Edge 30 Neo offers a great value proposition with a smooth 144Hz display, a capable triple-camera system, and a long-lasting battery.",
+      "price": 399,
+      "stock": 120,
+      "image": "placeholder_image.jpg", 
+      "UserId": 1
+    }
+  ]
