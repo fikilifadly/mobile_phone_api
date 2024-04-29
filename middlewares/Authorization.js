@@ -25,7 +25,7 @@ const ProductAuthorization = async (req, res, next) => {
 const suAuthorization = async (req, res, next) => {
 	try {
 		const { role } = req.user;
-		if (role !== "superadmin") throw { name: "Your dont have permission", status: 403 };
+		if (role !== "superadmin") throw { name: "You dont have permission", status: 403 };
 
 		next();
 	} catch (error) {

@@ -9,9 +9,6 @@ const errorHandler = (err, req, res, next) => {
 		case "SequelizeUniqueConstraintError":
 			res.status(400).json({ message: err.errors[0].message });
 			break;
-		case "SequelizeDatabaseError":
-			res.status(400).json({ message: "Something Wrong On Database" });
-			break;
 		case "Username, Email and Password is required":
 		case "Email already registered":
 		case "Email and Password is required":
@@ -25,7 +22,10 @@ const errorHandler = (err, req, res, next) => {
 		case "Forbidden access":
 		case "You dont have permission":
 		case "Image is required":
+		case "Image File type not supported":
 			res.status(statusCode).json({ message: err.name });
+		case "JsonWebTokenError":
+			res.status(401).json({ message: "Invalid token" });
 		default:
 			res.status(statusCode).json({ message: "Internal Server Error" });
 			break;

@@ -61,11 +61,19 @@ module.exports = class ProductController {
 
 			let convertedImage;
 
-			if (image.indexOf("base64") !== -1) {
-				convertedImage = await cloudinary.uploader.upload(image, { folder: "10xers" });
-				convertedImage = convertedImage.url;
+			if (image.includes("base64")) {
+				if (image.includes("png") || image.includes("jpg") || image.includes("jpeg")) {
+					convertedImage = await cloudinary.uploader.upload(image, { folder: "10xers" });
+					convertedImage = convertedImage.url;
+				} else {
+					throw { name: "Image File type not supported", status: 400 };
+				}
 			} else {
-				convertedImage = image;
+				if (image.includes("png") || image.includes("jpg") || image.includes("jpeg")) {
+					convertedImage = image;
+				} else {
+					throw { name: "Image File type not supported", status: 400 };
+				}
 			}
 
 			const product = await Product.create({
@@ -104,15 +112,23 @@ module.exports = class ProductController {
 			let convertedImage;
 
 			if (image) {
-				if (image.indexOf("base64") !== -1) {
-					convertedImage = await cloudinary.uploader.upload(image, { folder: "10xers" });
-					convertedImage = convertedImage.url;
+				if (image.includes("base64")) {
+					if (image.includes("png") || image.includes("jpg") || image.includes("jpeg")) {
+						convertedImage = await cloudinary.uploader.upload(image, { folder: "10xers" });
+						convertedImage = convertedImage.url;
+					} else {
+						throw { name: "Image File type not supported", status: 400 };
+					}
 				} else {
-					convertedImage = image;
+					if (image.includes("png") || image.includes("jpg") || image.includes("jpeg")) {
+						convertedImage = image;
+					} else {
+						throw { name: "Image File type not supported", status: 400 };
+					}
 				}
 			}
 
-			console.log(removeSame, "=====");
+			removeSame.image = convertedImage;
 
 			await product.update(removeSame);
 			await product.save();
