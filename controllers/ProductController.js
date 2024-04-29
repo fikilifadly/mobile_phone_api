@@ -57,6 +57,8 @@ module.exports = class ProductController {
 			const { name, description, price, stock, image } = req.body;
 			const { id } = req.user;
 
+			if (!image) throw { name: "Image is required", status: 400 };
+
 			const convertedImage = await cloudinary.uploader.upload(image, { folder: "10xers" });
 
 			const product = await Product.create({
@@ -67,7 +69,7 @@ module.exports = class ProductController {
 				image: convertedImage.url,
 				UserId: id,
 			});
-			res.status(201).json(product);
+			res.status(201).json({ message: `Product ${product.name} successfully created` });
 		} catch (error) {
 			next(error);
 		}
@@ -75,8 +77,6 @@ module.exports = class ProductController {
 
 	static async updateProduct(req, res, next) {
 		try {
-			if (isObjectEmpty(req.body)) throw { name: "Theres nothing to update", status: 400 };
-
 			const { UserId, image } = req.body;
 
 			const { id } = req.params;
@@ -88,6 +88,7 @@ module.exports = class ProductController {
 			});
 
 			if (!product) throw { name: "Product not found", status: 404 };
+			if (isObjectEmpty(req.body)) throw { name: "Theres nothing to update", status: 400 };
 
 			if (UserId) throw { name: "Forbidden access", status: 403 };
 

@@ -1,6 +1,5 @@
-const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const cloudinary = require("cloudinary").v2;
+const bcrypt = require("bcryptjs");
 
 const hashPass = (password) => {
 	const salt = bcrypt.genSaltSync(10);
@@ -12,14 +11,18 @@ const comparePassword = (plain, hashed) => bcrypt.compareSync(plain, hashed);
 
 const signToken = (payload) => jwt.sign(payload, process.env.SECRET);
 
-const verifyToken = (token) => jwt.verify(token, process.env.SECRET);
+const verifyToken = (token) => {
+	return jwt.verify(token, process.env.SECRET);
+};
 
 const isObjectEmpty = (objectName) => Object.keys(objectName).length === 0;
 
-const storage = cloudinary.config({
-	cloud_name: process.env.CLOUD_NAME,
-	api_key: process.env.CLOUDINARY_KEY,
-	api_secret: process.env.CLOUDINARY_SECRET,
-});
+const convertImageToBase64 = (imageFile) => {
+	const reader = new FileReader();
+	reader.readAsDataURL(imageFile);
+	return new Promise((resolve) => {
+		reader.onload = (event) => resolve(event.target.result);
+	});
+};
 
-module.exports = { hashPass, comparePassword, signToken, verifyToken, isObjectEmpty, storage };
+module.exports = { hashPass, comparePassword, signToken, verifyToken, isObjectEmpty, convertImageToBase64 };
