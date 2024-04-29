@@ -59,14 +59,21 @@ module.exports = class ProductController {
 
 			if (!image) throw { name: "Image is required", status: 400 };
 
-			const convertedImage = await cloudinary.uploader.upload(image, { folder: "10xers" });
+			let convertedImage;
+
+			if (image.indexOf("base64") !== -1) {
+				convertedImage = await cloudinary.uploader.upload(image, { folder: "10xers" });
+				convertedImage = convertedImage.url;
+			} else {
+				convertedImage = image;
+			}
 
 			const product = await Product.create({
 				name,
 				description,
 				price,
 				stock,
-				image: convertedImage.url,
+				image: convertedImage,
 				UserId: id,
 			});
 			res.status(201).json({ message: `Product ${product.name} successfully created` });
@@ -94,10 +101,15 @@ module.exports = class ProductController {
 
 			const removeSame = Object.fromEntries(Object.entries(req.body).filter(([key, value]) => key in product && value !== undefined && value !== null && value !== ""));
 
-			if (image) {
-				const { url } = await cloudinary.uploader.upload(image, { folder: "10xers" });
+			let convertedImage;
 
-				removeSame.image = url;
+			if (image) {
+				if (image.indexOf("base64") !== -1) {
+					convertedImage = await cloudinary.uploader.upload(image, { folder: "10xers" });
+					convertedImage = convertedImage.url;
+				} else {
+					convertedImage = image;
+				}
 			}
 
 			console.log(removeSame, "=====");
